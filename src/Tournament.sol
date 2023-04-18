@@ -36,7 +36,7 @@ contract Tournament {
     /**
      * @dev Platfrom admin can create an new tournaments.
      * @param _tUserLimit total users that can join created tournament.
-     * @param _tournamentDurationTime duration time of created tournament. duration time start after tournament starting.
+     * @param _tournamentDurationTime duration time of created tournament. duration time start after starting tournament.
      * Note: emit evente on succesfully tournament creation.
      */
 
