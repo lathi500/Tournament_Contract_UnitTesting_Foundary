@@ -20,6 +20,8 @@ contract Tournament {
         admin = msg.sender;
     }
 
+    /** smart contract deployer will be our admin */
+
     modifier onleyAdmin() {
         require(msg.sender == admin, "Caller is not admin");
         _;
@@ -30,6 +32,13 @@ contract Tournament {
         uint256 tournamentStartTime,
         uint256 tournamentDuration
     );
+
+    /**
+     * @dev Platfrom admin can create an new tournaments.
+     * @param _tUserLimit total users that can join created tournament.
+     * @param _tournamentDurationTime duration time of created tournament. duration time start after tournament starting.
+     * Note: emit evente on succesfully tournament creation.
+     */
 
     function createTournament(uint _tUserLimit, uint256 _tournamentDurationTime)
         external
@@ -43,14 +52,21 @@ contract Tournament {
         ++totalTournaments;
         tournamentsList[totalTournaments].isCreated = true;
         tournamentsList[totalTournaments].totalUserLimit = _tUserLimit;
-        tournamentsList[totalTournaments].tournamentDurationTime = _tournamentDurationTime;
-        
+        tournamentsList[totalTournaments]
+            .tournamentDurationTime = _tournamentDurationTime;
+
         emit tournamentStarted(
             totalTournaments,
             block.timestamp,
             _tournamentDurationTime
         );
     }
+
+    /**
+     * @dev participants can join tournament using created tournament number.
+     * @param _tNumber tournament number.
+     * @return bool success or failure status.
+     */
 
     function joinTournament(uint256 _tNumber) external payable returns (bool) {
         require(
@@ -71,6 +87,12 @@ contract Tournament {
         return true;
     }
 
+    /**
+     * @dev Admin can start tournament once user limit is reached.
+     * @param _tNum Tournament number.
+     * @return success or failure status.
+     */
+
     function startTournament(uint256 _tNum) external onleyAdmin returns (bool) {
         require(
             tournamentsList[_tNum].participants.length ==
@@ -86,6 +108,13 @@ contract Tournament {
         return true;
     }
 
+    /**
+     * @dev Admin can end tournament after tournament duration time is completed.
+     * @param _tNum Tournament number.
+     * @param _winner Tournament winner address.
+     * @return success or failure status.
+     */
+
     function endTournament(uint256 _tNum, address _winner)
         external
         onleyAdmin
@@ -94,7 +123,7 @@ contract Tournament {
         require(
             block.timestamp + 2 >
                 tournamentsList[_tNum].tournamentStartTime +
-                    tournamentsList[_tNum].tournamentDurationTime ,
+                    tournamentsList[_tNum].tournamentDurationTime,
             "Tournament Duration Time Is Not Over At"
         );
         require(
@@ -118,9 +147,18 @@ contract Tournament {
         return false;
     }
 
+    /**
+     * @dev return total number of tournaments are created.
+     */
+
     function getTotalNumberOfTournaments() external view returns (uint) {
         return totalTournaments;
     }
+
+    /**
+     * @dev provide created tournament data based on tournament number.
+     * @param _tnumber tournament number.
+     */
 
     function getTournamentsData(uint _tnumber)
         external
@@ -135,7 +173,7 @@ contract Tournament {
             address[] memory
         )
     {
-        return ( 
+        return (
             tournamentsList[_tnumber].isCreated,
             tournamentsList[_tnumber].isStarted,
             tournamentsList[_tnumber].isEnded,
