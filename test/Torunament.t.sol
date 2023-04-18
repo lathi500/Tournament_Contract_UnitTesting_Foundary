@@ -4,7 +4,6 @@ pragma solidity ^0.8.13;
 import "forge-std/Test.sol";
 import {console} from "forge-std/console.sol";
 import "../src/Tournament.sol";
-import "lib/openzeppelin-contracts/contracts/utils/Timers.sol";
 
 contract CounterTest is Test {
 

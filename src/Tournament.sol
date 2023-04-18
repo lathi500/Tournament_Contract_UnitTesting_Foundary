@@ -43,8 +43,8 @@ contract Tournament {
         ++totalTournaments;
         tournamentsList[totalTournaments].isCreated = true;
         tournamentsList[totalTournaments].totalUserLimit = _tUserLimit;
-        tournamentsList[totalTournaments]
-            .tournamentDurationTime = _tournamentDurationTime;
+        tournamentsList[totalTournaments].tournamentDurationTime = _tournamentDurationTime;
+        
         emit tournamentStarted(
             totalTournaments,
             block.timestamp,
